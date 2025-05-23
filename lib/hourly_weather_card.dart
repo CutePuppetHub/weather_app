@@ -28,7 +28,7 @@ class HourlyWeatherCard extends StatelessWidget {
             SizedBox(height: 10),
             Icon(icon, size: 32),
             SizedBox(height: 10),
-            Text("$temperature°F", style: TextStyle(fontSize: 16)),
+            Text("$temperature K", style: TextStyle(fontSize: 16)),
           ],
         ),
       ),

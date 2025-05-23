@@ -3,6 +3,7 @@ import "dart:ui";
 
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
+import "package:intl/intl.dart";
 import "package:weather_app/additional_info_card.dart";
 import "package:weather_app/api_key.dart";
 import "package:weather_app/hourly_weather_card.dart";
@@ -57,7 +58,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              // Handle settings action
+              setState(() {
+              });
             },
           ),
         ],
@@ -112,8 +114,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Icon(  data['list'][0]['weather'][0]['main'] == "clouds" || data['list'][0]['weather'][0]['main'] == "Rain" ? Icons.cloud : Icons.sunny,
-                              size: 100),
+                              Icon(
+                                data['list'][0]['weather'][0]['main'] ==
+                                            "clouds" ||
+                                        data['list'][0]['weather'][0]['main'] ==
+                                            "Rain"
+                                    ? Icons.cloud
+                                    : Icons.sunny,
+                                size: 100,
+                              ),
                               const SizedBox(height: 10),
                               Text(
                                 "$currentSky",
@@ -154,22 +163,24 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 // ),
                 SizedBox(
                   height: 125,
-                  
+
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
                     itemBuilder: (context, index) {
+                      final time = DateTime.parse(
+                        data['list'][index + 1]['dt_txt'],
+                      );
                       return HourlyWeatherCard(
-                        timeofday: data['list'][index + 1]['dt_txt']
-                            .toString()
-                            .split(" ")[1]
-                            .substring(0, 5),
-                        icon: data['list'][index + 1]['weather'][0]['main'] ==
-                                "clouds" ||
+                        timeofday: DateFormat.j().format(time),
+                        icon:
                             data['list'][index + 1]['weather'][0]['main'] ==
-                                "Rain"
-                            ? Icons.cloud
-                            : Icons.sunny,
+                                        "clouds" ||
+                                    data['list'][index +
+                                            1]['weather'][0]['main'] ==
+                                        "Rain"
+                                ? Icons.cloud
+                                : Icons.sunny,
                         temperature:
                             data['list'][index + 1]['main']['temp'].round(),
                       );
